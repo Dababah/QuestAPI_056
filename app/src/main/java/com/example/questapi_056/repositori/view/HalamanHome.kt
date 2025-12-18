@@ -47,45 +47,29 @@ import com.example.questapi_056
 import com.example.questapi_056
 .viewmodel.StatusUiSiswa
 
-@OptIn(ExperimentalMaterial3Api::class)
+
+
 @Composable
-fun HomeScreen(
-    navigateToItemEntry: () -> Unit,
-    navigateToItemUpdate: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(factory = PenyediaViewModel.Factory)
+fun HomeBody(
+    statusUiSiswa: StatusUiSiswa,
+    onSiswaClick: (Int) -> Unit,
+    retryAction: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-    Scaffold(
-        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-        topBar = {
-            SiswaTopAppBar(
-                title = stringResource(DestinasiHome.titleRes),
-                canNavigateBack = false,
-                scrollBehavior = scrollBehavior
-            )
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = navigateToItemEntry,
-                shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.entry_siswa)
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        when (statusUiSiswa) {
+            is StatusUiSiswa.Loading -> LoadingScreen()
+            is StatusUiSiswa.Success ->
+                DaftarSiswa(
+                    dataSiswa = statusUiSiswa.listSiswa,
+                    onSiswaClick = onSiswaClick
                 )
-            }
+            is StatusUiSiswa.Error -> ErrorScreen(retryAction)
         }
-    ) { innerPadding ->
-        HomeBody(
-            statusUiSiswa = viewModel.listSiswa,
-            onSiswaClick = navigateToItemUpdate,
-            retryAction = viewModel::loadSiswa,
-            modifier = modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-        )
     }
 }
 
+@
