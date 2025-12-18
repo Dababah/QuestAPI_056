@@ -47,32 +47,23 @@ import com.example.questapi_056
 import com.example.questapi_056
 .viewmodel.StatusUiSiswa
 
-
-
+@
 @Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
-    Image(
-        modifier = modifier.size(200.dp),
-        painter = painterResource(R.drawable.loading_img),
-        contentDescription = stringResource(R.string.loading)
-    )
-}
-
-@Composable
-fun ErrorScreen(
-    retryAction: () -> Unit,
+fun DaftarSiswa(
+    dataSiswa: List<DataSiswa>,
+    onSiswaClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(text = stringResource(R.string.gagal))
-        Button(onClick = retryAction) {
-            Text(stringResource(R.string.retry))
+    LazyColumn(modifier = modifier) {
+        items(items = dataSiswa, key = { it.id }) { person ->
+            ItemSiswa(
+                siswa = person,
+                modifier = Modifier
+                    .padding(dimensionResource(id = R.dimen.padding_small))
+                    .clickable { onSiswaClick(person.id) }
+            )
         }
     }
 }
 
-@Composable
+@
