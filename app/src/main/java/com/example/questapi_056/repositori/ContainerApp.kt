@@ -9,7 +9,27 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 
-interface ContainerApp {
-    val repositoryDataSiswa : RepositoryDataSiswa
+
+
+    private val retrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(baseurl)
+        .addConverterFactory(
+            Json {
+                ignoreUnknownKeys = true
+                prettyPrint = true
+                isLenient = true
+            }.asConverterFactory("application/json".toMediaType())
+        )
+        .client(klien)
+        .build()
+
+    private val retrofitService : ServiceApiSiswa by lazy {
+        retrofit.create(ServiceApiSiswa::class.java)
+    }
+
+    override val repositoryDataSiswa: RepositoryDataSiswa by lazy {
+        JaringanRepositoryDataSiswa(retrofitService)
+    }
 }
 
+c
