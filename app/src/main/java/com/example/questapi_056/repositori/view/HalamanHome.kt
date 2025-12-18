@@ -50,26 +50,29 @@ import com.example.questapi_056
 
 
 @Composable
-fun HomeBody(
-    statusUiSiswa: StatusUiSiswa,
-    onSiswaClick: (Int) -> Unit,
+fun LoadingScreen(modifier: Modifier = Modifier) {
+    Image(
+        modifier = modifier.size(200.dp),
+        painter = painterResource(R.drawable.loading_img),
+        contentDescription = stringResource(R.string.loading)
+    )
+}
+
+@Composable
+fun ErrorScreen(
     retryAction: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        when (statusUiSiswa) {
-            is StatusUiSiswa.Loading -> LoadingScreen()
-            is StatusUiSiswa.Success ->
-                DaftarSiswa(
-                    dataSiswa = statusUiSiswa.listSiswa,
-                    onSiswaClick = onSiswaClick
-                )
-            is StatusUiSiswa.Error -> ErrorScreen(retryAction)
+        Text(text = stringResource(R.string.gagal))
+        Button(onClick = retryAction) {
+            Text(stringResource(R.string.retry))
         }
     }
 }
 
-@
+@Composable
