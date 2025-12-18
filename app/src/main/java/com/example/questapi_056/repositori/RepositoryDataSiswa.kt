@@ -6,8 +6,8 @@ import com.example.questapi_056
 import com.example.questapi_056
 .modeldata.DataSiswa
 
+:RepositoryDataSiswa{
+    override suspend fun getDataSiswa(): List<DataSiswa> = serviceApiSiswa.getSiswa()
+    override suspend fun postDataSiswa(dataSiswa: DataSiswa): retrofit2.Response<Void> = serviceApiSiswa.postSiswa(dataSiswa)
 
-class JaringanRepositoryDataSiswa(
-    private val serviceApiSiswa: ServiceApiSiswa
-)
 }
